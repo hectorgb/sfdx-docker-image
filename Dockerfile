@@ -1,20 +1,40 @@
 # node > 14.6.0 is required for the SFDX-Git-Delta plugin
-FROM node:14.14-alpine
+FROM node:latest
 
 #add usefull tools
-RUN apk add --update --no-cache  \
-      git \
-      findutils \
-      bash \
-      unzip \
-      curl \
-      wget \
-      nodejs-npm \
-      openjdk8-jre \
-      openssh-client \
-      perl \
-      jq
+# RUN apk add --update --no-cache  \
+#       git \
+#       findutils \
+#       bash \
+#       unzip \
+#       curl \
+#       wget \
+#       nodejs-npm \
+#       java-cacerts \
+#       openssh-client \
+#       perl \
+#       jq 
 
+
+RUN apt update
+RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install default-jdk git findutils bash curl wget nodejs openssh-client perl jq && \
+    apt install -y ant && \
+    apt clean;
+
+# RUN apt update && \
+#     apt install ca-certificates-java && \
+#     apt clean && \
+#     update-ca-certificates -f;
+
+ENV SFDX_AUTOUPDATE_DISABLE=true
+ENV SFDX_USE_GENERIC_UNIX_KEYCHAIN=true
+ENV SFDX_DOMAIN_RETRY=300
+ENV SFDX_PROJECT_AUTOUPDATE_DISABLE_FOR_PACKAGE_CREATE=true
+ENV SFDX_PROJECT_AUTOUPDATE_DISABLE_FOR_PACKAGE_VERSION_CREATE=true
+ENV SFDX_DISABLE_SOURCE_MEMBER_POLLING=true
+# ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
+
+RUN export JAVA_HOME
 
 RUN npm install sfdc-merge-package --global
 RUN smp --version
