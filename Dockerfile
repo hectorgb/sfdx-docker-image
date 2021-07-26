@@ -20,6 +20,9 @@ ENV SFDX_DISABLE_SOURCE_MEMBER_POLLING=true
 RUN npm install sfdc-merge-package --global
 RUN smp --version
 
+RUN npm install -g sfdc-specified-test
+RUN sst --version
+
 RUN echo y | sfdx plugins:install sfdx-git-delta
 RUN sfdx plugins
 
