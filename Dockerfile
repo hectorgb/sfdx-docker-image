@@ -23,6 +23,9 @@ RUN smp --version
 RUN npm install -g sfdc-specified-test
 RUN sst --version
 
+RUN npm install -g sfdx-git-delta@latest
+RUN sgd --version
+
 RUN echo y | sfdx plugins:install sfdx-git-delta
 RUN sfdx plugins
 
